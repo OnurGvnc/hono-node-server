@@ -5,7 +5,7 @@ MacBookAir10,1 M1 16GB RAM 8 Core
 ### with undici
 
 ```sh
-yarn tsx examples/example-with-remix-webfetch.ts
+yarn tsx examples/example-with-undici.ts
 yarn autocannon -c 50 -d 10 http://localhost:3010
 
 
