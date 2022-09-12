@@ -2,6 +2,12 @@
 
 MacBookAir10,1 M1 16GB RAM 8 Core
 
+|                           |               |
+| ------------------------- | ------------: |
+| with @remix-run/web-fetch | 43463 Req/Sec |
+| with node-fetch           | 35352 Req/Sec |
+| with undici               | 17131 Req/Sec |
+
 ### with undici
 
 ```sh
@@ -57,4 +63,32 @@ Req/Bytes counts sampled once per second.
 # of samples: 11
 
 478k requests in 11.01s, 87 MB read
+```
+
+### with [node-fetch](https://github.com/node-fetch/node-fetch)
+
+```sh
+yarn tsx examples/example-with-node-fetch.ts
+yarn autocannon -c 50 -d 10 http://localhost:3010
+
+Running 10s test @ http://localhost:3010
+50 connections
+
+┌─────────┬──────┬──────┬───────┬──────┬─────────┬─────────┬───────┐
+│ Stat    │ 2.5% │ 50%  │ 97.5% │ 99%  │ Avg     │ Stdev   │ Max   │
+├─────────┼──────┼──────┼───────┼──────┼─────────┼─────────┼───────┤
+│ Latency │ 1 ms │ 1 ms │ 2 ms  │ 2 ms │ 1.04 ms │ 0.26 ms │ 10 ms │
+└─────────┴──────┴──────┴───────┴──────┴─────────┴─────────┴───────┘
+┌───────────┬─────────┬─────────┬─────────┬─────────┬──────────┬────────┬─────────┐
+│ Stat      │ 1%      │ 2.5%    │ 50%     │ 97.5%   │ Avg      │ Stdev  │ Min     │
+├───────────┼─────────┼─────────┼─────────┼─────────┼──────────┼────────┼─────────┤
+│ Req/Sec   │ 33855   │ 33855   │ 35455   │ 36319   │ 35352.73 │ 643.79 │ 33850   │
+├───────────┼─────────┼─────────┼─────────┼─────────┼──────────┼────────┼─────────┤
+│ Bytes/Sec │ 6.16 MB │ 6.16 MB │ 6.45 MB │ 6.61 MB │ 6.43 MB  │ 116 kB │ 6.16 MB │
+└───────────┴─────────┴─────────┴─────────┴─────────┴──────────┴────────┴─────────┘
+
+Req/Bytes counts sampled once per second.
+# of samples: 11
+
+389k requests in 11.01s, 70.8 MB read
 ```
