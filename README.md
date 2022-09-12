@@ -1,68 +1,60 @@
-# HTTP server for Hono on Node.js
+# @honojs/node-server with [@remix-run/web-fetch](https://github.com/remix-run/web-std-io/blob/main/packages/fetch/Readme.md)
 
-**This project is still experimental.**
+MacBookAir10,1 M1 16GB RAM 8 Core
 
-Hono is ultrafast web framework for Cloudflare Workers, Deno, and Bun.
-**It's not for Node.js**.
-BUT, there may be a case that you really want to run on Node.js.
-This library is an adaptor server that connects Hono and Node.js.
+### with undici
 
-Hono is ultra fast, but not so fast on Node.js,
-because there is an overhead to adapt Hono's API to Node.js.
-You should not run tha application using Hono on Node.js, but if you really want to, use this.
+```sh
+yarn tsx examples/example-with-remix-webfetch.ts
+yarn autocannon -c 50 -d 10 http://localhost:3010
 
-## Install
 
-You can install from npm registry:
+Running 10s test @ http://localhost:3010
+50 connections
 
-```
-npm install @honojs/node-server
-```
+┌─────────┬──────┬──────┬───────┬──────┬────────┬────────┬───────┐
+│ Stat    │ 2.5% │ 50%  │ 97.5% │ 99%  │ Avg    │ Stdev  │ Max   │
+├─────────┼──────┼──────┼───────┼──────┼────────┼────────┼───────┤
+│ Latency │ 2 ms │ 2 ms │ 5 ms  │ 6 ms │ 2.3 ms │ 0.9 ms │ 37 ms │
+└─────────┴──────┴──────┴───────┴──────┴────────┴────────┴───────┘
+┌───────────┬─────────┬─────────┬─────────┬─────────┬─────────┬─────────┬─────────┐
+│ Stat      │ 1%      │ 2.5%    │ 50%     │ 97.5%   │ Avg     │ Stdev   │ Min     │
+├───────────┼─────────┼─────────┼─────────┼─────────┼─────────┼─────────┼─────────┤
+│ Req/Sec   │ 13791   │ 13791   │ 17535   │ 17807   │ 17131.6 │ 1149.06 │ 13784   │
+├───────────┼─────────┼─────────┼─────────┼─────────┼─────────┼─────────┼─────────┤
+│ Bytes/Sec │ 2.51 MB │ 2.51 MB │ 3.19 MB │ 3.24 MB │ 3.12 MB │ 209 kB  │ 2.51 MB │
+└───────────┴─────────┴─────────┴─────────┴─────────┴─────────┴─────────┴─────────┘
 
-Or
+Req/Bytes counts sampled once per second.
+# of samples: 10
 
-```
-yarn add @honojs/node-server
-```
-
-## Usage
-
-The code:
-
-```ts
-import { serve } from '@honojs/node-server' // Write above `Hono`
-import { Hono } from 'hono'
-
-const app = new Hono()
-app.get('/', (c) => c.text('Hono meets Node.js'))
-
-serve(app)
+171k requests in 10.01s, 31.2 MB read
 ```
 
-And, run:
+### with [@remix-run/web-fetch](https://github.com/remix-run/web-std-io/blob/main/packages/fetch/Readme.md)
 
+```sh
+yarn tsx examples/example-with-remix-webfetch.ts
+yarn autocannon -c 50 -d 10 http://localhost:3010
+
+Running 10s test @ http://localhost:3010
+50 connections
+
+┌─────────┬──────┬──────┬───────┬──────┬─────────┬─────────┬───────┐
+│ Stat    │ 2.5% │ 50%  │ 97.5% │ 99%  │ Avg     │ Stdev   │ Max   │
+├─────────┼──────┼──────┼───────┼──────┼─────────┼─────────┼───────┤
+│ Latency │ 0 ms │ 1 ms │ 2 ms  │ 2 ms │ 0.88 ms │ 0.45 ms │ 11 ms │
+└─────────┴──────┴──────┴───────┴──────┴─────────┴─────────┴───────┘
+┌───────────┬─────────┬─────────┬─────────┬─────────┬──────────┬────────┬─────────┐
+│ Stat      │ 1%      │ 2.5%    │ 50%     │ 97.5%   │ Avg      │ Stdev  │ Min     │
+├───────────┼─────────┼─────────┼─────────┼─────────┼──────────┼────────┼─────────┤
+│ Req/Sec   │ 41855   │ 41855   │ 43807   │ 44799   │ 43463.28 │ 955.15 │ 41825   │
+├───────────┼─────────┼─────────┼─────────┼─────────┼──────────┼────────┼─────────┤
+│ Bytes/Sec │ 7.61 MB │ 7.61 MB │ 7.97 MB │ 8.15 MB │ 7.91 MB  │ 174 kB │ 7.61 MB │
+└───────────┴─────────┴─────────┴─────────┴─────────┴──────────┴────────┴─────────┘
+
+Req/Bytes counts sampled once per second.
+# of samples: 11
+
+478k requests in 11.01s, 87 MB read
 ```
-ts-node ./index.ts
-```
-
-## Options
-
-```ts
-serve({
-  fetch: app.fetch,
-  port: 8787,
-})
-```
-
-## Related projects
-
-- Hono - <https://honojs.dev/>
-- Hono GitHub repository - <https://github.com/honojs/hono>
-
-## Author
-
-Yusuke Wada <https://github.com/yusukebe>
-
-## License
-
-MIT
