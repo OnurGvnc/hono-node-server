@@ -1,0 +1,20 @@
+{
+  "name": "benchmarks",
+  "version": "1.0.0",
+  "private": true,
+  "module": "esm",
+  "scripts": {
+    "start": "zx benchmark.mjs"
+  },
+  "dependencies": {
+    "@honojs/node-server": "^0.0.1",
+    "express": "^4.18.1",
+    "fastify": "^4.6.0",
+    "hono": "^2.1.4"
+  },
+  "devDependencies": {
+    "autocannon": "^7.9.0",
+    "kill-port": "^2.0.1",
+    "zx": "^7.0.8"
+  }
+}
