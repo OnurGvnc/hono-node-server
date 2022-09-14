@@ -1,5 +1,5 @@
-import { serve } from '@honojs/node-server'
-// import { serve } from '../../dist/server.js'
+// import { serve } from '@honojs/node-server'
+import { serve } from '../../dist/server.js'
 import { Hono } from 'hono'
 
 const app = new Hono()

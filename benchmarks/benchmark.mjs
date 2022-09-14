@@ -1,6 +1,10 @@
-import { $ } from 'zx'
+import { $, cd } from 'zx'
 import kill from 'kill-port'
 import autocannon from 'autocannon'
+
+cd('../')
+await $`yarn build`
+cd(__dirname)
 
 const frameworks = [
   {
@@ -60,6 +64,8 @@ try {
 }
 
 console.log('')
+
+results.sort((a, b) => b.reqSec - a.reqSec)
 
 for (const result of results) {
   console.log(
